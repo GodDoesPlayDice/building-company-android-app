@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BuildingObjectActivity"/>
+        <activity
+            android:name=".ProgramActivity"
+            android:label="@string/title_activity_program"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".BuildingObjectActivity" />
         <activity android:name=".EventActivity" />
         <activity
             android:name=".MainActivity"

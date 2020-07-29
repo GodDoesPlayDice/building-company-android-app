@@ -16,9 +16,9 @@ import java.util.List;
 import ru.eva.oasis.R;
 import ru.eva.oasis.model.Programm;
 
-public class MortrageProgramAdapter extends RecyclerView.Adapter<MortrageProgramAdapter.ViewHolder> {
+public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgramAdapter.ViewHolder> {
     private List<Programm> programList;
-    public MortrageProgramAdapter(List<Programm> programList) {
+    public MortgageProgramAdapter(List<Programm> programList) {
         this.programList = programList;
     }
 
@@ -41,7 +41,6 @@ public class MortrageProgramAdapter extends RecyclerView.Adapter<MortrageProgram
                 .error(R.drawable.ic_error)
                 .into(holder.imageView);
     }
-
 
     @Override
     public int getItemCount() {

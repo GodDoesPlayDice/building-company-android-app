@@ -17,6 +17,7 @@ import java.util.List;
 import ru.eva.oasis.R;
 import ru.eva.oasis.interfaces.OnBottomSheetItemClick;
 import ru.eva.oasis.model.MortgageMode;
+import ru.eva.oasis.repository.Storage;
 import ru.eva.oasis.ui.mortgage.adapter.MortgageModeAdapter;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
@@ -29,15 +30,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bottom_sheet, container, false);
 
-        List<MortgageMode> mortgageModeList = new ArrayList<>();
-        for(int i=0; i<5; i++) {
-            MortgageMode mortgageMode = new MortgageMode();
-            mortgageMode.setMode("Режим "+(i+1));
-            mortgageMode.setSelected(false);
-            if(mortgageMode.getMode().equals(name))
-                mortgageMode.setSelected(true);
-            mortgageModeList.add(mortgageMode);
-        }
+        List<MortgageMode> mortgageModeList = Storage.getInstance().getMortgageList(name);
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), RecyclerView.VERTICAL);

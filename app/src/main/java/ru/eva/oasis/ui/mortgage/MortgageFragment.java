@@ -1,5 +1,6 @@
 package ru.eva.oasis.ui.mortgage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,29 +8,21 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ru.eva.oasis.ProgramActivity;
 import ru.eva.oasis.R;
 import ru.eva.oasis.interfaces.OnBottomSheetItemClick;
-import ru.eva.oasis.model.Programm;
-import ru.eva.oasis.ui.mortgage.adapter.MortrageProgramAdapter;
+import ru.eva.oasis.repository.Storage;
+import ru.eva.oasis.ui.mortgage.adapter.MortgageProgramAdapter;
 
 public class MortgageFragment extends Fragment implements OnBottomSheetItemClick {
 
@@ -54,6 +47,11 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
             bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
             bottomSheetFragment.setOnItemClickListener(this);
             bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+        });
+
+        AppCompatTextView showAll = root.findViewById(R.id.show_all_text_view);
+        showAll.setOnClickListener(v -> {
+            startActivity(new Intent(root.getContext(), ProgramActivity.class));
         });
 
         AppCompatTextView projectCoastTv = root.findViewById(R.id.project_coast_text_view);
@@ -84,26 +82,12 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext(), RecyclerView.HORIZONTAL, false));
-        recyclerView.setAdapter(new MortrageProgramAdapter(getProgramList()));
+        recyclerView.setAdapter(new MortgageProgramAdapter(Storage.getInstance().getProgramList()));
 
         AppCompatButton submit = root.findViewById(R.id.submit_btn);
         submit.setOnClickListener(v -> { });
 
         return root;
-    }
-
-    private List<Programm> getProgramList() {
-        List<Programm> programmList = new ArrayList<>();
-        Programm programm = new Programm();
-        programm.setCompany("Себрбанк");
-        programm.setText("Акция на новостройки");
-        programm.setSecondaryText("От 20%");
-        programm.setId(1);
-        programm.setImageUrl("https://жкоазискрд.рф/img/sale/web4.jpg");
-        programmList.add(programm);
-        programmList.add(programm);
-        programmList.add(programm);
-        return programmList;
     }
 
     @Override
