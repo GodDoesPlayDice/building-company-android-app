@@ -1,8 +1,10 @@
 package ru.eva.oasis.model;
 
 public class BuildingObject {
+
     private String imageUrl;
     private String title;
+    private String subtitle;
     private int id;
 
     public String getTitle() {
@@ -27,5 +29,13 @@ public class BuildingObject {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
     }
 }

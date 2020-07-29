@@ -38,13 +38,14 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BuildingObject banner = buildingObjectList.get(position);
+        BuildingObject object = buildingObjectList.get(position);
         Picasso.get()
-                .load(banner.getImageUrl())
+                .load(object.getImageUrl())
                 .placeholder(R.drawable.ic_placeholder)
                 .error(R.drawable.ic_error)
                 .into(holder.imageView);
-        holder.title.setText(banner.getTitle());
+        holder.title.setText(object.getTitle());
+        holder.subtitle.setText(object.getSubtitle());
     }
 
     @Override
@@ -55,12 +56,13 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final AppCompatImageView imageView;
-        private final AppCompatTextView title;
+        private final AppCompatTextView title, subtitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             title = itemView.findViewById(R.id.titleTextView);
+            subtitle = itemView.findViewById(R.id.subtitleTextView);
             itemView.setOnClickListener(v-> onRecyclerItemClickListener.onRecyclerItemClick(getAdapterPosition()));
         }
     }

@@ -7,9 +7,16 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +34,7 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
 
     private View root;
     private TextInputEditText mortgageModeText;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_mortgage, container, false);
@@ -67,6 +75,9 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext(), RecyclerView.HORIZONTAL, false));
         recyclerView.setAdapter(new MortrageProgramAdapter(getProgramList()));
+
+        AppCompatButton submit = root.findViewById(R.id.submit_btn);
+        submit.setOnClickListener(v -> { });
 
         return root;
     }
