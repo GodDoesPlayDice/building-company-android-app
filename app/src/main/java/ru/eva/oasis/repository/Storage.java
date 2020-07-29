@@ -27,9 +27,9 @@ public class Storage {
         programm.setSecondaryText("От 20%");
         programm.setId(1);
         programm.setImageUrl("https://жкоазискрд.рф/img/sale/web4.jpg");
-        programmList.add(programm);
-        programmList.add(programm);
-        programmList.add(programm);
+        for (int i = 0; i < 20; i++) {
+            programmList.add(programm);
+        }
         return programmList;
     }
 
