@@ -9,6 +9,7 @@ import android.widget.SeekBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -34,14 +35,23 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
 
     private View root;
     private TextInputEditText mortgageModeText;
+    private AppCompatImageView mortgageModeImage;
+    private BottomSheetFragment bottomSheetFragment;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_mortgage, container, false);
 
         mortgageModeText = root.findViewById(R.id.mortgage_mode_text);
+        mortgageModeImage = root.findViewById(R.id.mortgage_mode_image);
         mortgageModeText.setOnClickListener(v->{
-            BottomSheetFragment bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
+            bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
+            bottomSheetFragment.setOnItemClickListener(this);
+            bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+        });
+
+        mortgageModeImage.setOnClickListener(v->{
+            bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
             bottomSheetFragment.setOnItemClickListener(this);
             bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
         });
@@ -99,5 +109,6 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
     @Override
     public void onClick(String name) {
         mortgageModeText.setText(name);
+        bottomSheetFragment.dismiss();
     }
 }

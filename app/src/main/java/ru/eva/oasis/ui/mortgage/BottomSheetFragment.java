@@ -30,7 +30,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         View root = inflater.inflate(R.layout.fragment_bottom_sheet, container, false);
 
         List<MortgageMode> mortgageModeList = new ArrayList<>();
-        for(int i=0; i<4; i++) {
+        for(int i=0; i<5; i++) {
             MortgageMode mortgageMode = new MortgageMode();
             mortgageMode.setMode("Режим "+(i+1));
             mortgageMode.setSelected(false);

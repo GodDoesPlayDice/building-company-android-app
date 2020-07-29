@@ -38,7 +38,7 @@ public class MortgageModeAdapter extends RecyclerView.Adapter<MortgageModeAdapte
         if(mortgageMode.isSelected())
             holder.checkedImageView.setVisibility(View.VISIBLE);
         else
-            holder.checkedImageView.setVisibility(View.GONE);
+            holder.checkedImageView.setVisibility(View.INVISIBLE);
     }
 
     @Override

@@ -13,10 +13,11 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/calculation_mode"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -24,8 +25,9 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
         android:isScrollContainer="false"
-        tools:listitem="@layout/item_mortgage_mode"/>
+        tools:listitem="@layout/item_mortgage_mode" />
 
 
 </LinearLayout>
