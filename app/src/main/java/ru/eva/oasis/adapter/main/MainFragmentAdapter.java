@@ -1,4 +1,4 @@
-package ru.eva.oasis.ui.main.adapter;
+package ru.eva.oasis.adapter.main;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,19 +14,19 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import ru.eva.oasis.R;
-import ru.eva.oasis.interfaces.OnRecyclerItemClickListener;
+import ru.eva.oasis.interfaces.OnItemClickListener;
 import ru.eva.oasis.model.BuildingObject;
 
 public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapter.ViewHolder> {
-    private OnRecyclerItemClickListener onRecyclerItemClickListener;
+    private OnItemClickListener onItemClickListener;
     private List<BuildingObject> buildingObjectList;
 
     public MainFragmentAdapter(List<BuildingObject> buildingObjectList) {
         this.buildingObjectList = buildingObjectList;
     }
 
-    public void setOnClickListener(OnRecyclerItemClickListener onRecyclerItemClickListener) {
-        this.onRecyclerItemClickListener = onRecyclerItemClickListener;
+    public void setOnClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -63,7 +63,7 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
             imageView = itemView.findViewById(R.id.imageView);
             title = itemView.findViewById(R.id.titleTextView);
             subtitle = itemView.findViewById(R.id.subtitleTextView);
-            itemView.setOnClickListener(v-> onRecyclerItemClickListener.onRecyclerItemClick(getAdapterPosition()));
+            itemView.setOnClickListener(v-> onItemClickListener.onClick(getAdapterPosition()));
         }
     }
 }

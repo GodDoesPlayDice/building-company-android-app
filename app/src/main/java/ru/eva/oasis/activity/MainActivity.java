@@ -1,4 +1,4 @@
-package ru.eva.oasis;
+package ru.eva.oasis.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +17,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import ru.eva.oasis.R;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
@@ -32,15 +34,9 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_main, R.id.nav_mortgage, R.id.nav_news).setOpenableLayout(drawer).build();
+        appBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_main, R.id.nav_mortgage, R.id.nav_news, R.id.nav_account).setOpenableLayout(drawer).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.eva.oasis.ui.mortgage.adapter;
+package ru.eva.oasis.adapter.mortgage;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +14,14 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import ru.eva.oasis.R;
-import ru.eva.oasis.model.Programm;
+import ru.eva.oasis.interfaces.OnItemClickListener;
+import ru.eva.oasis.model.Program;
 
 public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgramAdapter.ViewHolder> {
-    private List<Programm> programList;
-    public MortgageProgramAdapter(List<Programm> programList) {
+
+    private OnItemClickListener onItemClickListener;
+    private List<Program> programList;
+    public MortgageProgramAdapter(List<Program> programList) {
         this.programList = programList;
     }
 
@@ -31,12 +34,12 @@ public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgram
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Programm programm = programList.get(position);
-        holder.companyTextView.setText(programm.getCompany());
-        holder.textView.setText(programm.getText());
-        holder.secondaryTextTextView.setText(programm.getSecondaryText());
+        Program program = programList.get(position);
+        holder.companyTextView.setText(program.getCompany());
+        holder.textView.setText(program.getText());
+        holder.secondaryTextTextView.setText(program.getSecondaryText());
         Picasso.get()
-                .load(programm.getImageUrl())
+                .load(program.getImageUrl())
                 .placeholder(R.drawable.ic_placeholder)
                 .error(R.drawable.ic_error)
                 .into(holder.imageView);
@@ -45,6 +48,10 @@ public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgram
     @Override
     public int getItemCount() {
         return programList.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,6 +63,7 @@ public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgram
             textView = itemView.findViewById(R.id.text_view);
             secondaryTextTextView = itemView.findViewById(R.id.secondry_text_view);
             imageView = itemView.findViewById(R.id.image_view);
+            itemView.setOnClickListener(v->onItemClickListener.onClick(getAdapterPosition()));
         }
     }
 }

@@ -1,11 +1,12 @@
 package ru.eva.oasis.model;
 
-public class Programm {
+public class Program {
     private String company;
     private String text;
     private String secondaryText;
     private int id;
     private String imageUrl;
+    private String description;
 
     public String getCompany() {
         return company;
@@ -45,5 +46,13 @@ public class Programm {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

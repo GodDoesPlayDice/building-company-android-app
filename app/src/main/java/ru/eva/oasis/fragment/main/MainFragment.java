@@ -1,47 +1,35 @@
-package ru.eva.oasis.ui.main;
+package ru.eva.oasis.fragment.main;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.zhpan.indicator.IndicatorView;
 import com.zhpan.indicator.enums.IndicatorSlideMode;
 import com.zhpan.indicator.enums.IndicatorStyle;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import ru.eva.oasis.BuildingObjectActivity;
-import ru.eva.oasis.EventActivity;
-import ru.eva.oasis.MainActivity;
+import ru.eva.oasis.activity.BuildingObjectActivity;
+import ru.eva.oasis.activity.EventActivity;
 import ru.eva.oasis.R;
 import ru.eva.oasis.interfaces.OnPagerItemClickListener;
-import ru.eva.oasis.interfaces.OnRecyclerItemClickListener;
+import ru.eva.oasis.interfaces.OnItemClickListener;
 import ru.eva.oasis.model.Banner;
 import ru.eva.oasis.model.BuildingObject;
 import ru.eva.oasis.repository.Storage;
-import ru.eva.oasis.ui.main.adapter.MainFragmentAdapter;
-import ru.eva.oasis.ui.main.adapter.ViewPagerAdapter;
+import ru.eva.oasis.adapter.main.MainFragmentAdapter;
+import ru.eva.oasis.adapter.main.ViewPagerAdapter;
 
-public class MainFragment extends Fragment implements OnPagerItemClickListener, OnRecyclerItemClickListener {
+public class MainFragment extends Fragment implements OnPagerItemClickListener, OnItemClickListener {
     private List<Banner> bannerList;
     private List<BuildingObject> buildingObjectList;
     private View root;
@@ -80,7 +68,7 @@ public class MainFragment extends Fragment implements OnPagerItemClickListener, 
     }
 
     @Override
-    public void onRecyclerItemClick(int position) {
+    public void onClick(int position) {
         startActivity(new Intent(root.getContext(), BuildingObjectActivity.class)
                 .putExtra("id", buildingObjectList.get(position).getId()));
     }

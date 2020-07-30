@@ -1,14 +1,12 @@
 package ru.eva.oasis.repository;
 
-import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.eva.oasis.model.Banner;
 import ru.eva.oasis.model.BuildingObject;
 import ru.eva.oasis.model.MortgageMode;
-import ru.eva.oasis.model.Programm;
+import ru.eva.oasis.model.Program;
 
 public class Storage {
     private static volatile Storage instance;
@@ -19,18 +17,19 @@ public class Storage {
         return new Storage();
     }
 
-    public List<Programm> getProgramList() {
-        List<Programm> programmList = new ArrayList<>();
-        Programm programm = new Programm();
-        programm.setCompany("Себрбанк");
-        programm.setText("Акция на новостройки");
-        programm.setSecondaryText("От 20%");
-        programm.setId(1);
-        programm.setImageUrl("https://жкоазискрд.рф/img/sale/web4.jpg");
+    public List<Program> getProgramList() {
+        List<Program> programList = new ArrayList<>();
+        Program program = new Program();
+        program.setCompany("Себрбанк");
+        program.setText("Акция на новостройки");
+        program.setSecondaryText("От 20%");
+        program.setId(1);
+        program.setImageUrl("https://жкоазискрд.рф/img/sale/web4.jpg");
+        program.setDescription("Описание программы");
         for (int i = 0; i < 20; i++) {
-            programmList.add(programm);
+            programList.add(program);
         }
-        return programmList;
+        return programList;
     }
 
     public List<Banner> getBannerList() {

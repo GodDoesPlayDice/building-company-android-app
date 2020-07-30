@@ -1,17 +1,19 @@
-package ru.eva.oasis;
+package ru.eva.oasis.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class EventActivity extends AppCompatActivity {
+import ru.eva.oasis.R;
+
+public class BuildingObjectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
+        setContentView(R.layout.activity_building_object);
         TextView textView = findViewById(R.id.textView);
-        textView.setText("Событие № " + getIntent().getIntExtra("id", -1));
+        textView.setText("Строительный объект № " + getIntent().getIntExtra("id", -1));
     }
 }

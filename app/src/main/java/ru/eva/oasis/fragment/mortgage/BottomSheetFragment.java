@@ -1,4 +1,4 @@
-package ru.eva.oasis.ui.mortgage;
+package ru.eva.oasis.fragment.mortgage;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.eva.oasis.R;
 import ru.eva.oasis.interfaces.OnBottomSheetItemClick;
 import ru.eva.oasis.model.MortgageMode;
 import ru.eva.oasis.repository.Storage;
-import ru.eva.oasis.ui.mortgage.adapter.MortgageModeAdapter;
+import ru.eva.oasis.adapter.mortgage.MortgageModeAdapter;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
 

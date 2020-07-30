@@ -1,4 +1,4 @@
-package ru.eva.oasis;
+package ru.eva.oasis.adapter.program;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +13,15 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import ru.eva.oasis.model.Programm;
+import ru.eva.oasis.R;
+import ru.eva.oasis.interfaces.OnItemClickListener;
+import ru.eva.oasis.model.Program;
 
-class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder> {
-    private List<Programm> programList;
-    public ProgramAdapter(List<Programm> programList) {
+public class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder> {
+
+    private OnItemClickListener onItemClickListener;
+    private List<Program> programList;
+    public ProgramAdapter(List<Program> programList) {
         this.programList = programList;
     }
 
@@ -30,12 +34,12 @@ class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Programm programm = programList.get(position);
-        holder.companyTextView.setText(programm.getCompany());
-        holder.textView.setText(programm.getText());
-        holder.secondaryTextTextView.setText(programm.getSecondaryText());
+        Program program = programList.get(position);
+        holder.companyTextView.setText(program.getCompany());
+        holder.textView.setText(program.getText());
+        holder.secondaryTextTextView.setText(program.getSecondaryText());
         Picasso.get()
-                .load(programm.getImageUrl())
+                .load(program.getImageUrl())
                 .placeholder(R.drawable.ic_placeholder)
                 .error(R.drawable.ic_error)
                 .into(holder.imageView);
@@ -44,6 +48,10 @@ class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return programList.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -55,6 +63,7 @@ class ProgramAdapter extends RecyclerView.Adapter<ProgramAdapter.ViewHolder> {
             textView = itemView.findViewById(R.id.text_view);
             secondaryTextTextView = itemView.findViewById(R.id.secondry_text_view);
             imageView = itemView.findViewById(R.id.image_view);
+            itemView.setOnClickListener(v-> onItemClickListener.onClick(getAdapterPosition()));
         }
     }
 }

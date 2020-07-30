@@ -1,4 +1,4 @@
-package ru.eva.oasis.ui.mortgage;
+package ru.eva.oasis.fragment.mortgage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,18 +18,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import ru.eva.oasis.ProgramActivity;
-import ru.eva.oasis.R;
-import ru.eva.oasis.interfaces.OnBottomSheetItemClick;
-import ru.eva.oasis.repository.Storage;
-import ru.eva.oasis.ui.mortgage.adapter.MortgageProgramAdapter;
+import java.util.List;
 
-public class MortgageFragment extends Fragment implements OnBottomSheetItemClick {
+import ru.eva.oasis.activity.ProgramActivity;
+import ru.eva.oasis.R;
+import ru.eva.oasis.activity.ProgramDetailsActivity;
+import ru.eva.oasis.adapter.mortgage.MortgageModeAdapter;
+import ru.eva.oasis.interfaces.OnBottomSheetItemClick;
+import ru.eva.oasis.interfaces.OnItemClickListener;
+import ru.eva.oasis.model.Program;
+import ru.eva.oasis.repository.Storage;
+import ru.eva.oasis.adapter.mortgage.MortgageProgramAdapter;
+
+public class MortgageFragment extends Fragment implements OnBottomSheetItemClick, OnItemClickListener {
 
     private View root;
     private TextInputEditText mortgageModeText;
     private AppCompatImageView mortgageModeImage;
     private BottomSheetFragment bottomSheetFragment;
+    private List<Program> programList;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,22 +44,12 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
 
         mortgageModeText = root.findViewById(R.id.mortgage_mode_text);
         mortgageModeImage = root.findViewById(R.id.mortgage_mode_image);
-        mortgageModeText.setOnClickListener(v->{
-            bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
-            bottomSheetFragment.setOnItemClickListener(this);
-            bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
-        });
+        mortgageModeText.setOnClickListener(v-> openBottomSheetFragment());
 
-        mortgageModeImage.setOnClickListener(v->{
-            bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
-            bottomSheetFragment.setOnItemClickListener(this);
-            bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
-        });
+        mortgageModeImage.setOnClickListener(v-> openBottomSheetFragment());
 
         AppCompatTextView showAll = root.findViewById(R.id.show_all_text_view);
-        showAll.setOnClickListener(v -> {
-            startActivity(new Intent(root.getContext(), ProgramActivity.class));
-        });
+        showAll.setOnClickListener(v -> startActivity(new Intent(root.getContext(), ProgramActivity.class)));
 
         AppCompatTextView projectCoastTv = root.findViewById(R.id.project_coast_text_view);
         AppCompatSeekBar projectCoastSb = root.findViewById(R.id.project_coast_seekbar);
@@ -64,6 +61,7 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String text = progress*1000+" Р";
                 projectCoastTv.setText(text);
+                initialPaymentSb.setProgress(calculateInitialPaymentProgress(progress));
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) { }
             @Override public void onStopTrackingTouch(SeekBar seekBar) { }
@@ -80,9 +78,12 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
         });
 
 
+        programList = Storage.getInstance().getProgramList();
+        MortgageProgramAdapter adapter = new MortgageProgramAdapter(programList);
+        adapter.setOnItemClickListener(this);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext(), RecyclerView.HORIZONTAL, false));
-        recyclerView.setAdapter(new MortgageProgramAdapter(Storage.getInstance().getProgramList()));
+        recyclerView.setAdapter(adapter);
 
         AppCompatButton submit = root.findViewById(R.id.submit_btn);
         submit.setOnClickListener(v -> { });
@@ -90,9 +91,25 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
         return root;
     }
 
+    private int calculateInitialPaymentProgress(int progress) {
+        return progress/10;
+    }
+
+    private void openBottomSheetFragment() {
+        bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
+        bottomSheetFragment.setOnItemClickListener(this);
+        bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+    }
+
     @Override
     public void onClick(String name) {
         mortgageModeText.setText(name);
         bottomSheetFragment.dismiss();
+    }
+
+    @Override
+    public void onClick(int position) {
+        startActivity(new Intent(root.getContext(), ProgramDetailsActivity.class)
+                .putExtra("id", programList.get(position).getId()));
     }
 }

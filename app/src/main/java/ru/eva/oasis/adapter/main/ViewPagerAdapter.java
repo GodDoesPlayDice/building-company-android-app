@@ -1,4 +1,4 @@
-package ru.eva.oasis.ui.main.adapter;
+package ru.eva.oasis.adapter.main;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,4 +1,4 @@
-package ru.eva.oasis.ui.mortgage.adapter;
+package ru.eva.oasis.adapter.mortgage;
 
 import android.view.LayoutInflater;
 import android.view.View;
