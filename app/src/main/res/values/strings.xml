@@ -26,7 +26,6 @@
     <string name="submit_an_application">Подать заявку</string>
     <string name="show_all">Показать все</string>
     <string name="selected_programs">Подобранные программы</string>
-    <string name="title_activity_program">ProgrammActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
