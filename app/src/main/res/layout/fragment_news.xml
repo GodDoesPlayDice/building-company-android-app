@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.news.NewsFragment">
-    <include
-        layout="@layout/content_news"/>
+
+    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/content_news" />
 </androidx.constraintlayout.widget.ConstraintLayout>
