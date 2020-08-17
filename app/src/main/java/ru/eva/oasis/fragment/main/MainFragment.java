@@ -75,7 +75,11 @@ public class MainFragment extends Fragment implements OnPagerItemClickListener, 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        (Long x) -> viewPager2.setCurrentItem(x.intValue() % bannerList.size()),
+                        (Long x) ->
+                        {
+                            int nextItem = viewPager2.getCurrentItem() + 1 == bannerList.size() ? 0 : viewPager2.getCurrentItem() + 1;
+                            viewPager2.setCurrentItem(nextItem);
+                        },
                         e -> Toast.makeText(root.getContext(), e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }

@@ -28,30 +28,31 @@ import ru.eva.oasis.R;
 import ru.eva.oasis.activity.MortgageProgramActivity;
 import ru.eva.oasis.activity.MortgageProgramDetailsActivity;
 import ru.eva.oasis.adapter.mortgage.MortgageProgramAdapter;
-import ru.eva.oasis.helper.Convert;
 import ru.eva.oasis.interfaces.OnBottomSheetItemClick;
 import ru.eva.oasis.interfaces.OnItemClickListener;
-import ru.eva.oasis.interfaces.OnMortgageProgramsReceived;
 import ru.eva.oasis.model.MortgageProgram;
-import ru.eva.oasis.repository.Firebase;
 
-public class MortgageFragment extends Fragment implements OnBottomSheetItemClick, OnItemClickListener, OnMortgageProgramsReceived, TextView.OnEditorActionListener {
+public class MortgageFragment extends Fragment implements ContractMortgage.View,
+        OnBottomSheetItemClick,
+        OnItemClickListener,
+        TextView.OnEditorActionListener {
 
     private View root;
     private TextInputEditText mortgageModeText;
     private BottomSheetFragment bottomSheetFragment;
-    private double maxInitialPayment, minInitialPayment;
-    private double minCost = 45000;
-    private double maxCost = 1000000;
+
     private AppCompatTextView projectCoastTv;
     private AppCompatTextView initialPaymentTv;
-    private TextInputEditText ageTv;
-    private TextInputEditText termTv;
-    private int[] ids;
+    private AppCompatSeekBar initialPaymentSb;
+    private TextInputEditText ageEt;
+    private TextInputEditText termEt;
+    private ContractMortgage.Presenter mPresenter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_mortgage, container, false);
+
+        mPresenter = new PresenterMortgage(this);
 
         mortgageModeText = root.findViewById(R.id.mortgage_mode_text);
         AppCompatImageView mortgageModeImage = root.findViewById(R.id.mortgage_mode_image);
@@ -60,34 +61,28 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
         mortgageModeImage.setOnClickListener(v -> openBottomSheetFragment());
 
         AppCompatTextView showAll = root.findViewById(R.id.show_all_text_view);
-        showAll.setOnClickListener(v -> startMortgageProgramActivity());
+        showAll.setOnClickListener(v ->
+                mPresenter.startMortgageActivity(mortgageModeText.getText().toString(),
+                        projectCoastTv.getText().toString(),
+                        initialPaymentTv.getText().toString(),
+                        ageEt.getText().toString(),
+                        termEt.getText().toString()));
 
         projectCoastTv = root.findViewById(R.id.project_coast_text_view);
-        AppCompatSeekBar projectCoastSb = root.findViewById(R.id.project_coast_seekbar);
+        AppCompatSeekBar projectCostSb = root.findViewById(R.id.project_coast_seekbar);
         initialPaymentTv = root.findViewById(R.id.intial_payment_text_view);
-        AppCompatSeekBar initialPaymentSb = root.findViewById(R.id.intial_payment_seekbar);
+        initialPaymentSb = root.findViewById(R.id.initial_payment_seekbar);
 
-        ageTv = root.findViewById(R.id.age_text_view);
-        termTv = root.findViewById(R.id.term_text_view);
+        ageEt = root.findViewById(R.id.age_text_view);
+        termEt = root.findViewById(R.id.term_text_view);
 
-        Firebase.getInstance().getMortgageProgram("Стандартный режим расчета", this);
+        ageEt.setOnEditorActionListener(this);
+        termEt.setOnEditorActionListener(this);
 
-        ageTv.setOnEditorActionListener(this);
-        termTv.setOnEditorActionListener(this);
-
-        projectCoastSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        projectCostSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                projectCoastTv.setText(getProjectCostText(progress));
-                minInitialPayment = getProjectCost(progress) / 10;
-                maxInitialPayment = getProjectCost(progress) / 10 * 9;
-                if (minInitialPayment > Convert.getInstance().stringToDouble(initialPaymentTv)) {
-                    initialPaymentTv.setText((int) minInitialPayment + "");
-                }
-                if (maxInitialPayment < Convert.getInstance().stringToDouble(initialPaymentTv)) {
-                    initialPaymentTv.setText((int) maxInitialPayment + "");
-                }
-                initialPaymentSb.setProgress(calculateInitialPaymentProgress(Convert.getInstance().stringToDouble(initialPaymentTv)));
+                mPresenter.onCostProgressChanged(progress, initialPaymentTv.getText().toString());
             }
 
             @Override
@@ -96,16 +91,18 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                getMortgageProgram(mortgageModeText.getText().toString());
+                mPresenter.getMortgageProgram(mortgageModeText.getText().toString(),
+                        projectCoastTv.getText().toString(),
+                        initialPaymentTv.getText().toString(),
+                        ageEt.getText().toString(),
+                        termEt.getText().toString());
             }
         });
 
         initialPaymentSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                double calc = minInitialPayment + ((double) progress / 100) * (maxInitialPayment - minInitialPayment);
-                String text = (int) calc + "";
-                initialPaymentTv.setText(text);
+                mPresenter.onPaymentProgressChanged(progress);
             }
 
             @Override
@@ -114,13 +111,24 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                getMortgageProgram(mortgageModeText.getText().toString());
+                mPresenter.getMortgageProgram(mortgageModeText.getText().toString(),
+                        projectCoastTv.getText().toString(),
+                        initialPaymentTv.getText().toString(),
+                        ageEt.getText().toString(),
+                        termEt.getText().toString());
             }
         });
         AppCompatButton submit = root.findViewById(R.id.submit_btn);
         submit.setOnClickListener(v -> {
 
         });
+
+        mPresenter.getMortgageProgram(mortgageModeText.getText().toString(),
+                projectCoastTv.getText().toString(),
+                initialPaymentTv.getText().toString(),
+                ageEt.getText().toString(),
+                termEt.getText().toString());
+
         return root;
     }
 
@@ -131,7 +139,11 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
                 event != null &&
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-            getMortgageProgram(mortgageModeText.getText().toString());
+            mPresenter.getMortgageProgram(mortgageModeText.getText().toString(),
+                    projectCoastTv.getText().toString(),
+                    initialPaymentTv.getText().toString(),
+                    ageEt.getText().toString(),
+                    termEt.getText().toString());
             return event == null || !event.isShiftPressed();
         }
         return false;
@@ -141,7 +153,11 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
     public void onClick(String name) {
         mortgageModeText.setText(name);
         bottomSheetFragment.dismiss();
-        getMortgageProgram(name);
+        mPresenter.getMortgageProgram(mortgageModeText.getText().toString(),
+                projectCoastTv.getText().toString(),
+                initialPaymentTv.getText().toString(),
+                ageEt.getText().toString(),
+                termEt.getText().toString());
     }
 
     @Override
@@ -150,74 +166,58 @@ public class MortgageFragment extends Fragment implements OnBottomSheetItemClick
                 .putExtra("id", position + ""));
     }
 
+    private void openBottomSheetFragment() {
+        bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
+        bottomSheetFragment.setOnItemClickListener(this);
+        bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+    }
+
     @Override
-    public void onResponse(List<MortgageProgram> programList) {
+    public void startMortgageActivity(String mode, int projectCost, int initialPayment, int age, int term) {
+        startActivity(new Intent(root.getContext(), MortgageProgramActivity.class)
+                .putExtra("name", mode)
+                .putExtra("projectCoast", projectCost)
+                .putExtra("initialPayment", initialPayment)
+                .putExtra("age", age)
+                .putExtra("term", term));
+    }
+
+    @Override
+    public void setInitialPaymentProgress(int progress) {
+        initialPaymentSb.setProgress(progress);
+    }
+
+    @Override
+    public void setProjectCoastText(String projectCostText) {
+        projectCoastTv.setText(projectCostText);
+    }
+
+    @Override
+    public void setAdapter(List<MortgageProgram> programList) {
         MortgageProgramAdapter adapter = new MortgageProgramAdapter(programList);
         adapter.setOnItemClickListener(this);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext(), RecyclerView.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
-        ids = new int[programList.size()];
-        for (int i = 0; i < ids.length; i++) {
-            ids[i] = programList.get(i).getId();
-        }
     }
 
     @Override
-    public void onFailure(String message) {
+    public void showToast(String message) {
         Toast.makeText(root.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void startMortgageProgramActivity() {
-        if (checkInputFields())
-        startActivity(new Intent(root.getContext(), MortgageProgramActivity.class)
-                .putExtra("name", mortgageModeText.getText().toString())
-                .putExtra("projectCoast", Convert.getInstance().stringToInt(projectCoastTv))
-                .putExtra("initialPayment", Convert.getInstance().stringToInt(initialPaymentTv))
-                .putExtra("age", Convert.getInstance().stringToInt(ageTv))
-                .putExtra("term", Convert.getInstance().stringToInt(termTv)));
+    @Override
+    public void setInitialPaymentText(String text) {
+        initialPaymentTv.setText(text);
     }
 
-    private void getMortgageProgram(String name) {
-        if (checkInputFields())
-            Firebase.getInstance().getMortgageProgram(name,
-                    Convert.getInstance().stringToInt(projectCoastTv),
-                    Convert.getInstance().stringToInt(initialPaymentTv),
-                    Convert.getInstance().stringToInt(ageTv),
-                    Convert.getInstance().stringToInt(termTv),
-                    MortgageFragment.this);
+    @Override
+    public void setAgeEditTextError(String error) {
+        ageEt.setError(error);
     }
 
-    private boolean checkInputFields() {
-        if (!ageTv.getText().toString().equals("") && !termTv.getText().toString().equals("")) {
-            return true;
-        } else {
-            if (ageTv.toString().equals("")) {
-                ageTv.setError("Заполните поле");
-                return false;
-            }
-            if (termTv.toString().equals(""))
-                termTv.setError("Заполните поле");
-            return false;
-        }
-    }
-
-    private String getProjectCostText(int progress) {
-        return (int) getProjectCost(progress) + "";
-    }
-
-    private double getProjectCost(int progress) {
-        return minCost + ((double) progress / 100) * (maxCost - minCost);
-    }
-
-    private int calculateInitialPaymentProgress(double current) {
-        double calc = (current - minInitialPayment) / (maxInitialPayment - minInitialPayment) * 100;
-        return (int) calc;
-    }
-
-    private void openBottomSheetFragment() {
-        bottomSheetFragment = BottomSheetFragment.newInstance(mortgageModeText.getText().toString());
-        bottomSheetFragment.setOnItemClickListener(this);
-        bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+    @Override
+    public void setTermEditTextError(String error) {
+        termEt.setError(error);
     }
 }
