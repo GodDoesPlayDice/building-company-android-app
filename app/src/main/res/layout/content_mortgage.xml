@@ -21,7 +21,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/mortgage_mode_text"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:cursorVisible="false"
@@ -58,17 +58,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/project_coast"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            android:text="@string/project_coast" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/project_coast_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/count1"
-            app:layout_constraintEnd_toEndOf="@+id/view2"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            android:text="@string/count1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/P" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatSeekBar
@@ -89,17 +91,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/initial_payment"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            android:text="@string/initial_payment" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/intial_payment_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/count2"
-            app:layout_constraintEnd_toEndOf="@+id/view2"
-            app:layout_constraintTop_toBottomOf="@+id/view2" />
+            android:text="@string/count2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/P" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatSeekBar
@@ -121,9 +125,15 @@
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/age_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/age" />
+                android:hint="@string/age"
+                android:imeOptions="actionDone"
+                android:inputType="number|numberDecimal"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:text="25" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -132,9 +142,14 @@
             android:layout_weight="1">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/term_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/period" />
+                android:hint="@string/period"
+                android:imeOptions="actionDone"
+                android:inputType="number|numberDecimal"
+                android:singleLine="true"
+                android:text="10" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

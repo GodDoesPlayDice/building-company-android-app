@@ -15,13 +15,13 @@ import java.util.List;
 
 import ru.eva.oasis.R;
 import ru.eva.oasis.interfaces.OnItemClickListener;
-import ru.eva.oasis.model.Program;
+import ru.eva.oasis.model.MortgageProgram;
 
 public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgramAdapter.ViewHolder> {
 
     private OnItemClickListener onItemClickListener;
-    private List<Program> programList;
-    public MortgageProgramAdapter(List<Program> programList) {
+    private List<MortgageProgram> programList;
+    public MortgageProgramAdapter(List<MortgageProgram> programList) {
         this.programList = programList;
     }
 
@@ -34,10 +34,10 @@ public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgram
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Program program = programList.get(position);
-        holder.companyTextView.setText(program.getCompany());
-        holder.textView.setText(program.getText());
-        holder.secondaryTextTextView.setText(program.getSecondaryText());
+        MortgageProgram program = programList.get(position);
+        holder.companyTextView.setText(program.getBankName());
+        holder.textView.setText(program.getProgramName());
+        holder.secondaryTextTextView.setText(program.getCalculationMode());
         Picasso.get()
                 .load(program.getImageUrl())
                 .placeholder(R.drawable.ic_placeholder)
@@ -63,7 +63,7 @@ public class MortgageProgramAdapter extends RecyclerView.Adapter<MortgageProgram
             textView = itemView.findViewById(R.id.text_view);
             secondaryTextTextView = itemView.findViewById(R.id.secondry_text_view);
             imageView = itemView.findViewById(R.id.image_view);
-            itemView.setOnClickListener(v->onItemClickListener.onClick(getAdapterPosition()));
+            itemView.setOnClickListener(v->onItemClickListener.onClick(programList.get(getAdapterPosition()).getId()));
         }
     }
 }

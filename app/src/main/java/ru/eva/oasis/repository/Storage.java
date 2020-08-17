@@ -12,7 +12,7 @@ public class Storage {
     private static volatile Storage instance;
 
     public static Storage getInstance() {
-        if(instance != null)
+        if (instance != null)
             return instance;
         return new Storage();
     }
@@ -61,11 +61,12 @@ public class Storage {
 
     public List<MortgageMode> getMortgageList(String name) {
         List<MortgageMode> mortgageModeList = new ArrayList<>();
-        for(int i=0; i<5; i++) {
+        String[] modeName = {"Стандартный режим расчета", "Военная ипотека", "Семейная ипотека", "По двум документам"};
+        for (int i = 0; i < modeName.length; i++) {
             MortgageMode mortgageMode = new MortgageMode();
-            mortgageMode.setMode("Режим "+(i+1));
+            mortgageMode.setMode(modeName[i]);
             mortgageMode.setSelected(false);
-            if(mortgageMode.getMode().equals(name))
+            if (mortgageMode.getMode().equals(name))
                 mortgageMode.setSelected(true);
             mortgageModeList.add(mortgageMode);
         }

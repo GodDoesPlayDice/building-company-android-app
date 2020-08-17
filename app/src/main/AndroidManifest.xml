@@ -10,12 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name="App"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.ProgramDetailsActivity"
+            android:name=".activity.MortgageProgramDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activity.ProgramActivity"
+            android:name=".activity.MortgageProgramActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.BuildingObjectActivity"

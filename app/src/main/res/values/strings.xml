@@ -14,13 +14,13 @@
     <string name="mortgage">Ипотечный калькулятор</string>
     <string name="news">Новости</string>
     <string name="calculation_mode">Режим рассчета</string>
-    <string name="mode_default">Режим 1</string>
+    <string name="mode_default">Стандартный режим расчета</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="age">Возраст</string>
     <string name="period">Срок</string>
-    <string name="count2">4800000 Р</string>
-    <string name="count1">4800000 Р</string>
+    <string name="count2">45000</string>
+    <string name="count1">10000000</string>
     <string name="initial_payment">Первоначальный взнос</string>
     <string name="project_coast">Стоимость объекта</string>
     <string name="submit_an_application">Подать заявку</string>
@@ -44,4 +44,5 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="account">Личный кабинет</string>
+    <string name="P">P</string>
 </resources>

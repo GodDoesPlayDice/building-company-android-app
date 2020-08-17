@@ -42,6 +42,8 @@
                     style="@style/TextAppearance.AppCompat.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     tools:text="Акция на новостройик" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -49,6 +51,8 @@
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     tools:text="от 6.5%" />
             </LinearLayout>
 
