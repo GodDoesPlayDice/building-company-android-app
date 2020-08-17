@@ -173,13 +173,18 @@ public class MortgageFragment extends Fragment implements ContractMortgage.View,
     }
 
     @Override
-    public void startMortgageActivity(String mode, int projectCost, int initialPayment, int age, int term) {
-        startActivity(new Intent(root.getContext(), MortgageProgramActivity.class)
-                .putExtra("name", mode)
-                .putExtra("projectCoast", projectCost)
-                .putExtra("initialPayment", initialPayment)
-                .putExtra("age", age)
-                .putExtra("term", term));
+    public void setAdapter(List<MortgageProgram> programList) {
+        MortgageProgramAdapter adapter = new MortgageProgramAdapter(programList);
+        adapter.setOnItemClickListener(this);
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext(), RecyclerView.HORIZONTAL, false));
+        recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void setInitialPaymentText(String text) {
+        initialPaymentTv.setText(text);
     }
 
     @Override
@@ -193,25 +198,6 @@ public class MortgageFragment extends Fragment implements ContractMortgage.View,
     }
 
     @Override
-    public void setAdapter(List<MortgageProgram> programList) {
-        MortgageProgramAdapter adapter = new MortgageProgramAdapter(programList);
-        adapter.setOnItemClickListener(this);
-        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext(), RecyclerView.HORIZONTAL, false));
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(root.getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setInitialPaymentText(String text) {
-        initialPaymentTv.setText(text);
-    }
-
-    @Override
     public void setAgeEditTextError(String error) {
         ageEt.setError(error);
     }
@@ -220,4 +206,20 @@ public class MortgageFragment extends Fragment implements ContractMortgage.View,
     public void setTermEditTextError(String error) {
         termEt.setError(error);
     }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(root.getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startMortgageActivity(String mode, int projectCost, int initialPayment, int age, int term) {
+        startActivity(new Intent(root.getContext(), MortgageProgramActivity.class)
+                .putExtra("name", mode)
+                .putExtra("projectCoast", projectCost)
+                .putExtra("initialPayment", initialPayment)
+                .putExtra("age", age)
+                .putExtra("term", term));
+    }
+
 }
