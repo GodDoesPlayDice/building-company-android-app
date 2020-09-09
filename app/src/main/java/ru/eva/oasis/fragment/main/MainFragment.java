@@ -29,27 +29,26 @@ import ru.eva.oasis.activity.BuildingObjectActivity;
 import ru.eva.oasis.activity.EventActivity;
 import ru.eva.oasis.adapter.main.MainFragmentAdapter;
 import ru.eva.oasis.adapter.main.ViewPagerAdapter;
+import ru.eva.oasis.interfaces.OnBannersReceived;
 import ru.eva.oasis.interfaces.OnItemClickListener;
 import ru.eva.oasis.interfaces.OnPagerItemClickListener;
 import ru.eva.oasis.model.Banner;
 import ru.eva.oasis.model.BuildingObject;
+import ru.eva.oasis.repository.Firebase;
 import ru.eva.oasis.repository.Storage;
 
-public class MainFragment extends Fragment implements OnPagerItemClickListener, OnItemClickListener {
+public class MainFragment extends Fragment implements OnPagerItemClickListener, OnItemClickListener, OnBannersReceived {
     private List<Banner> bannerList;
     private List<BuildingObject> buildingObjectList;
     private View root;
+    private ViewPager2 viewPager2;
     private Disposable disposable;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ViewPager2 viewPager2 = root.findViewById(R.id.viewPager2);
-        bannerList = Storage.getInstance().getBannerList();
-
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(bannerList);
-        viewPagerAdapter.setOnPagerItemClickListener(this);
-        viewPager2.setAdapter(viewPagerAdapter);
+        viewPager2 = root.findViewById(R.id.viewPager2);
+        Firebase.getInstance().getBanners(this);
 
         IndicatorView indicatorView = root.findViewById(R.id.indicator_view);
         indicatorView
@@ -87,7 +86,7 @@ public class MainFragment extends Fragment implements OnPagerItemClickListener, 
     @Override
     public void onPagerClick(int position) {
         startActivity(new Intent(root.getContext(), EventActivity.class)
-                .putExtra("id", bannerList.get(position).getId()));
+                .putExtra("id", bannerList.get(position).getId()+""));
     }
 
     @Override
@@ -102,5 +101,19 @@ public class MainFragment extends Fragment implements OnPagerItemClickListener, 
         if (!disposable.isDisposed()) {
             disposable.dispose();
         }
+    }
+
+    @Override
+    public void onResponse(List<Banner> bannerList) {
+        this.bannerList = bannerList;
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(bannerList);
+        viewPagerAdapter.setOnPagerItemClickListener(this);
+        viewPager2.setAdapter(viewPagerAdapter);
+    }
+
+    @Override
+    public void onFailure(String message) {
+        Toast.makeText(root.getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
